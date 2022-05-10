@@ -1,2 +1,8 @@
-One of the elements of the inno-taxi service
-Golang version: 1.18
+# Driver-service
+***
+The service provides functionality to work with drivers.
+
+# External requirements
+***
+    Go 1.18
+
