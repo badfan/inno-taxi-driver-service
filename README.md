@@ -7,3 +7,5 @@ The service provides functionality to work with drivers.
     Go 1.18
     Docker
     Docker-compose
+    Sqlc
+    Goose
