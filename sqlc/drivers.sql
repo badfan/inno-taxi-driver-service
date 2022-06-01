@@ -26,17 +26,17 @@ SELECT * FROM drivers;
 SELECT * FROM drivers
 WHERE id = $1;
 
+-- name: GetDriverByPhoneAndPassword :one
+SELECT * FROM drivers
+WHERE phone_number = $1 AND password = $2;
+
 -- name: GetDriverStatusByID :one
 SELECT is_busy FROM drivers
 WHERE id = $1;
 
--- name: GetDriverPhoneByID :one
-SELECT phone_number FROM drivers
-WHERE id = $1;
-
--- name: GetDriverEmailByID :one
-SELECT email FROM drivers
-WHERE id = $1;
+-- name: GetDriverIDByPhone :one
+SELECT id FROM drivers
+WHERE phone_number = $1;
 
 -- name: GetDriverRatingByID :one
 SELECT driver_rating FROM drivers
