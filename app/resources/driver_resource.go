@@ -86,7 +86,7 @@ func sqlcDriverConvert(source *sqlc.Driver) *models.Driver {
 		PhoneNumber:  source.PhoneNumber,
 		Email:        source.Email,
 		Password:     source.Password,
-		TaxiType:     models.TaxiTypes(source.TaxiType),
+		TaxiType:     models.TaxiType(source.TaxiType),
 		DriverRating: source.DriverRating,
 		CreatedAt:    source.CreatedAt,
 		UpdatedAt:    source.UpdatedAt,

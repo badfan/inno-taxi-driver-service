@@ -6,13 +6,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type TaxiTypes string
+type TaxiType string
 
 const (
-	TaxiTypesEconomy  TaxiTypes = "economy"
-	TaxiTypesComfort  TaxiTypes = "comfort"
-	TaxiTypesBusiness TaxiTypes = "business"
-	TaxiTypesElectro  TaxiTypes = "electro"
+	TaxiTypeEconomy  TaxiType = "economy"
+	TaxiTypeComfort  TaxiType = "comfort"
+	TaxiTypeBusiness TaxiType = "business"
+	TaxiTypeElectro  TaxiType = "electro"
 )
 
 type Driver struct {
@@ -22,7 +22,7 @@ type Driver struct {
 	PhoneNumber  string    `json:"phone_number"`
 	Email        string    `json:"email"`
 	Password     string    `json:"password"`
-	TaxiType     TaxiTypes `json:"taxi_type"`
+	TaxiType     TaxiType  `json:"taxi_type"`
 	IsBusy       bool      `json:"is_busy"`
 	DriverRating float32   `json:"driver_rating"`
 	CreatedAt    time.Time `json:"created_at"`
