@@ -15,11 +15,11 @@ VALUES ($1, $2, $3, $4, $5) RETURNING id, driver_uuid, name, phone_number, email
 `
 
 type CreateDriverParams struct {
-	Name        string    `json:"name"`
-	PhoneNumber string    `json:"phone_number"`
-	Email       string    `json:"email"`
-	Password    string    `json:"password"`
-	TaxiType    TaxiTypes `json:"taxi_type"`
+	Name        string   `json:"name"`
+	PhoneNumber string   `json:"phone_number"`
+	Email       string   `json:"email"`
+	Password    string   `json:"password"`
+	TaxiType    TaxiType `json:"taxi_type"`
 }
 
 func (q *Queries) CreateDriver(ctx context.Context, arg CreateDriverParams) (Driver, error) {
@@ -192,12 +192,12 @@ WHERE id=$6 RETURNING id, driver_uuid, name, phone_number, email, password, taxi
 `
 
 type UpdateDriverParams struct {
-	Name        string    `json:"name"`
-	PhoneNumber string    `json:"phone_number"`
-	Email       string    `json:"email"`
-	Password    string    `json:"password"`
-	TaxiType    TaxiTypes `json:"taxi_type"`
-	ID          int32     `json:"id"`
+	Name        string   `json:"name"`
+	PhoneNumber string   `json:"phone_number"`
+	Email       string   `json:"email"`
+	Password    string   `json:"password"`
+	TaxiType    TaxiType `json:"taxi_type"`
+	ID          int32    `json:"id"`
 }
 
 func (q *Queries) UpdateDriver(ctx context.Context, arg UpdateDriverParams) (Driver, error) {

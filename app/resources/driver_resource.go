@@ -27,7 +27,7 @@ func (r *Resource) CreateDriver(ctx context.Context, driver *models.Driver) (int
 		PhoneNumber: driver.PhoneNumber,
 		Email:       driver.Email,
 		Password:    driver.Password,
-		TaxiType:    sqlc.TaxiTypes(driver.TaxiType),
+		TaxiType:    sqlc.TaxiType(driver.TaxiType),
 	})
 	if err != nil {
 		r.logger.Errorf("error occured while creating driver: %s", err.Error())
