@@ -15,11 +15,11 @@ VALUES ($1, $2, $3, $4, $5) RETURNING id, driver_uuid, name, phone_number, email
 `
 
 type CreateDriverParams struct {
-	Name        string    `json:"name"`
-	PhoneNumber string    `json:"phone_number"`
-	Email       string    `json:"email"`
-	Password    string    `json:"password"`
-	TaxiType    TaxiTypes `json:"taxi_type"`
+	Name        string   `json:"name"`
+	PhoneNumber string   `json:"phone_number"`
+	Email       string   `json:"email"`
+	Password    string   `json:"password"`
+	TaxiType    TaxiType `json:"taxi_type"`
 }
 
 func (q *Queries) CreateDriver(ctx context.Context, arg CreateDriverParams) (Driver, error) {
@@ -81,28 +81,45 @@ func (q *Queries) GetDriverByID(ctx context.Context, id int32) (Driver, error) {
 	return i, err
 }
 
-const getDriverEmailByID = `-- name: GetDriverEmailByID :one
-SELECT email FROM drivers
-WHERE id = $1
+const getDriverByPhoneAndPassword = `-- name: GetDriverByPhoneAndPassword :one
+SELECT id, driver_uuid, name, phone_number, email, password, taxi_type, is_busy, driver_rating, created_at, updated_at FROM drivers
+WHERE phone_number = $1 AND password = $2
 `
 
-func (q *Queries) GetDriverEmailByID(ctx context.Context, id int32) (string, error) {
-	row := q.db.QueryRowContext(ctx, getDriverEmailByID, id)
-	var email string
-	err := row.Scan(&email)
-	return email, err
+type GetDriverByPhoneAndPasswordParams struct {
+	PhoneNumber string `json:"phone_number"`
+	Password    string `json:"password"`
 }
 
-const getDriverPhoneByID = `-- name: GetDriverPhoneByID :one
-SELECT phone_number FROM drivers
-WHERE id = $1
+func (q *Queries) GetDriverByPhoneAndPassword(ctx context.Context, arg GetDriverByPhoneAndPasswordParams) (Driver, error) {
+	row := q.db.QueryRowContext(ctx, getDriverByPhoneAndPassword, arg.PhoneNumber, arg.Password)
+	var i Driver
+	err := row.Scan(
+		&i.ID,
+		&i.DriverUuid,
+		&i.Name,
+		&i.PhoneNumber,
+		&i.Email,
+		&i.Password,
+		&i.TaxiType,
+		&i.IsBusy,
+		&i.DriverRating,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getDriverIDByPhone = `-- name: GetDriverIDByPhone :one
+SELECT id FROM drivers
+WHERE phone_number = $1
 `
 
-func (q *Queries) GetDriverPhoneByID(ctx context.Context, id int32) (string, error) {
-	row := q.db.QueryRowContext(ctx, getDriverPhoneByID, id)
-	var phone_number string
-	err := row.Scan(&phone_number)
-	return phone_number, err
+func (q *Queries) GetDriverIDByPhone(ctx context.Context, phoneNumber string) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getDriverIDByPhone, phoneNumber)
+	var id int32
+	err := row.Scan(&id)
+	return id, err
 }
 
 const getDriverRatingByID = `-- name: GetDriverRatingByID :one
@@ -175,12 +192,12 @@ WHERE id=$6 RETURNING id, driver_uuid, name, phone_number, email, password, taxi
 `
 
 type UpdateDriverParams struct {
-	Name        string    `json:"name"`
-	PhoneNumber string    `json:"phone_number"`
-	Email       string    `json:"email"`
-	Password    string    `json:"password"`
-	TaxiType    TaxiTypes `json:"taxi_type"`
-	ID          int32     `json:"id"`
+	Name        string   `json:"name"`
+	PhoneNumber string   `json:"phone_number"`
+	Email       string   `json:"email"`
+	Password    string   `json:"password"`
+	TaxiType    TaxiType `json:"taxi_type"`
+	ID          int32    `json:"id"`
 }
 
 func (q *Queries) UpdateDriver(ctx context.Context, arg UpdateDriverParams) (Driver, error) {

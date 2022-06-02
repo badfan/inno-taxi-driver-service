@@ -1,4 +1,4 @@
-CREATE TYPE taxi_types AS ENUM ('economy', 'comfort', 'business', 'electro');
+CREATE TYPE taxi_type AS ENUM ('economy', 'comfort', 'business', 'electro');
 
 CREATE TABLE IF NOT EXISTS drivers
 (
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS drivers
     phone_number VARCHAR(25) UNIQUE NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    taxi_type taxi_types NOT NULL,
+    taxi_type taxi_type NOT NULL,
     is_busy BOOLEAN NOT NULL DEFAULT FALSE,
     driver_rating REAL NOT NULL DEFAULT 0.0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -26,17 +26,17 @@ SELECT * FROM drivers;
 SELECT * FROM drivers
 WHERE id = $1;
 
+-- name: GetDriverByPhoneAndPassword :one
+SELECT * FROM drivers
+WHERE phone_number = $1 AND password = $2;
+
 -- name: GetDriverStatusByID :one
 SELECT is_busy FROM drivers
 WHERE id = $1;
 
--- name: GetDriverPhoneByID :one
-SELECT phone_number FROM drivers
-WHERE id = $1;
-
--- name: GetDriverEmailByID :one
-SELECT email FROM drivers
-WHERE id = $1;
+-- name: GetDriverIDByPhone :one
+SELECT id FROM drivers
+WHERE phone_number = $1;
 
 -- name: GetDriverRatingByID :one
 SELECT driver_rating FROM drivers
